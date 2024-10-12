@@ -2,7 +2,7 @@ plugins {
     kotlin("jvm")
 }
 
-group = "dev.hossain.timeline"
+group = "dev.hossain.timeline.sample"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -10,6 +10,7 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":lib"))
     testImplementation(kotlin("test"))
 }
 

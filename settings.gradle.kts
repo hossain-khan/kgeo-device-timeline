@@ -4,3 +4,4 @@ plugins {
 rootProject.name = "device-timeline"
 include("lib")
 include("sample")
+
