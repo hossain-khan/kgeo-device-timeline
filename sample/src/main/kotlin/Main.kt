@@ -14,6 +14,9 @@ fun main() {
         println("Parsed timeline data with ${timeline.semanticSegments.size} segments")
         println("Parsed timeline data with ${timeline.rawSignals.size} signals")
         println("Parsed timeline data with ${timeline.userLocationProfile.frequentPlaces.size} frequent places")
+
+        val activityTypes: List<String> = timeline.rawSignals.map { it.activityRecord?.probableActivities?.map { it.type} ?: emptyList() }.flatten().distinct().sorted()
+        println("Unique activities: $activityTypes")
     } else {
         println("Resource not found")
     }
