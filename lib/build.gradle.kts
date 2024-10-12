@@ -10,6 +10,8 @@ repositories {
 }
 
 dependencies {
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+    implementation("com.squareup.okio:okio:3.4.0")
     testImplementation(kotlin("test"))
 }
 
