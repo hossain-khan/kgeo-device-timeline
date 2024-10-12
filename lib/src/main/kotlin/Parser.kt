@@ -7,10 +7,18 @@ import okio.buffer
 import okio.source
 import java.io.File
 
+/**
+ * A class responsible for parsing JSON data from a file into a [TimelineData] object.
+ */
 class Parser {
+    /**
+     * Parses the given file into a [TimelineData] object.
+     *
+     * @param file The JSON file of timeline data to be parsed.
+     * @return The parsed [TimelineData] object.
+     * @throws IllegalStateException if the file does not exist or if the data cannot be parsed.
+     */
     fun parse(file: File): TimelineData {
-        println("Parsing...")
-
         if (file.exists()) {
             val source = file.source().buffer()
             val json = source.readUtf8()
