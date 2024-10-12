@@ -4,14 +4,14 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okio.buffer
 import okio.source
+import java.io.File
 
 class Parser {
-    fun parse() {
+    fun parse(file: File) {
         println("Parsing...")
 
-        val inputStream = javaClass.getResourceAsStream("/data.json")
-        if (inputStream != null) {
-            val source = inputStream.source().buffer()
+        if (file.exists()) {
+            val source = file.source().buffer()
             val json = source.readUtf8()
 
             val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
@@ -20,7 +20,7 @@ class Parser {
 
             println("Parsed data: $data")
         } else {
-            println("Resource not found")
+            println("File not found")
         }
     }
 }
