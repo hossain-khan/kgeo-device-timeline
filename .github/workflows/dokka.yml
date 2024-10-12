@@ -18,6 +18,9 @@ jobs:
   dokka:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write  # Ensure the token has write permissions to the repository
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -39,20 +42,19 @@ jobs:
       - name: Generate Dokka HTML
         run: ./gradlew :lib:dokkaHtml
 
-      - name: Move Dokka HTML to docs
+      # Move Dokka HTML files to the /docs folder
+      - name: Move Dokka HTML to /docs
         run: |
-          rm -rf docs
-          mkdir -p docs
+          rm -rf docs/*
           mv lib/build/dokka/html/* docs/
 
+      # Commit and push changes to the /docs folder
       - name: Commit and push changes
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git status
-          git add docs
-          git status
-          git commit -m 'Update Dokka documentation' || echo "No changes to commit"
-          git push
+          git config --local user.name "GitHub Actions [bot]"
+          git config --local user.email "actions@users.noreply.github.com"
+          git add docs/
+          git commit -m "Update Dokka HTML documentation"
+          git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
