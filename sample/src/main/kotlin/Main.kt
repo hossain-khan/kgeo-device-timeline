@@ -6,7 +6,7 @@ import java.io.File
 fun main() {
     println("Hello Sample!")
     val parser = Parser()
-    val resource = {}.javaClass.getResource("/data.json")
+    val resource = {}.javaClass.getResource("/sample-data.json")
     if (resource != null) {
         val file = File(resource.toURI())
         parser.parse(file)
