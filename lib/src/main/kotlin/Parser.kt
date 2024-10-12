@@ -8,7 +8,7 @@ import okio.source
 import java.io.File
 
 class Parser {
-    fun parse(file: File) {
+    fun parse(file: File): TimelineData {
         println("Parsing...")
 
         if (file.exists()) {
@@ -19,9 +19,9 @@ class Parser {
             val adapter = moshi.adapter(TimelineData::class.java)
             val data = adapter.fromJson(json)
 
-            println("Parsed data: $data")
+            return data ?: throw IllegalStateException("Failed to parse data")
         } else {
-            println("File not found")
+            throw IllegalStateException("File not found")
         }
     }
 }

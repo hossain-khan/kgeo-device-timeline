@@ -1,0 +1,161 @@
+{
+    "semanticSegments": [
+        {
+            "startTime": "2023-10-01T08:00:00.000Z",
+            "endTime": "2023-10-01T09:00:00.000Z",
+            "startTimeTimezoneUtcOffsetMinutes": 0,
+            "endTimeTimezoneUtcOffsetMinutes": 0,
+            "timelinePath": [
+                {
+                    "point": "40.712776°, -74.005974°",
+                    "time": "2023-10-01T08:15:00.000Z"
+                },
+                {
+                    "point": "40.713776°, -74.006974°",
+                    "time": "2023-10-01T08:30:00.000Z"
+                },
+                {
+                    "point": "40.714776°, -74.007974°",
+                    "time": "2023-10-01T08:45:00.000Z"
+                },
+                {
+                    "point": "40.715776°, -74.008974°",
+                    "time": "2023-10-01T09:00:00.000Z"
+                },
+                {
+                    "point": "40.716776°, -74.009974°",
+                    "time": "2023-10-01T09:15:00.000Z"
+                }
+            ],
+            "visit": {
+                "hierarchyLevel": 1,
+                "probability": 0.85,
+                "topCandidate": {
+                    "placeId": "ChIJd8BlQ2BZwokRAFUEcm_qrcA",
+                    "semanticType": "INFERRED_WORK",
+                    "probability": 0.95,
+                    "placeLocation": {
+                        "latLng": "40.712776°, -74.005974°"
+                    }
+                }
+            }
+        },
+        {
+            "startTime": "2023-10-02T08:00:00.000Z",
+            "endTime": "2023-10-02T09:00:00.000Z",
+            "startTimeTimezoneUtcOffsetMinutes": 0,
+            "endTimeTimezoneUtcOffsetMinutes": 0,
+            "timelinePath": [
+                {
+                    "point": "40.712776°, -74.005974°",
+                    "time": "2023-10-02T08:15:00.000Z"
+                },
+                {
+                    "point": "40.713776°, -74.006974°",
+                    "time": "2023-10-02T08:30:00.000Z"
+                },
+                {
+                    "point": "40.714776°, -74.007974°",
+                    "time": "2023-10-02T08:45:00.000Z"
+                },
+                {
+                    "point": "40.715776°, -74.008974°",
+                    "time": "2023-10-02T09:00:00.000Z"
+                },
+                {
+                    "point": "40.716776°, -74.009974°",
+                    "time": "2023-10-02T09:15:00.000Z"
+                }
+            ],
+            "visit": {
+                "hierarchyLevel": 1,
+                "probability": 0.85,
+                "topCandidate": {
+                    "placeId": "ChIJd8BlQ2BZwokRAFUEcm_qrcA",
+                    "semanticType": "INFERRED_WORK",
+                    "probability": 0.95,
+                    "placeLocation": {
+                        "latLng": "40.712776°, -74.005974°"
+                    }
+                }
+            }
+        }
+    ],
+    "rawSignals": [
+        {
+            "activityRecord": {
+                "probableActivities": [
+                    {
+                        "type": "WALKING",
+                        "confidence": 0.9
+                    },
+                    {
+                        "type": "STILL",
+                        "confidence": 0.1
+                    }
+                ],
+                "timestamp": "2023-10-01T08:00:00.000Z"
+            },
+            "position": {
+                "LatLng": "40.712776°, -74.005974°",
+                "accuracyMeters": 5,
+                "altitudeMeters": 10.0,
+                "source": "GPS",
+                "timestamp": "2023-10-01T08:00:00.000Z",
+                "speedMetersPerSecond": 1.5
+            }
+        },
+        {
+            "activityRecord": {
+                "probableActivities": [
+                    {
+                        "type": "RUNNING",
+                        "confidence": 0.8
+                    },
+                    {
+                        "type": "STILL",
+                        "confidence": 0.2
+                    }
+                ],
+                "timestamp": "2023-10-02T08:00:00.000Z"
+            },
+            "position": {
+                "LatLng": "40.713776°, -74.006974°",
+                "accuracyMeters": 6,
+                "altitudeMeters": 11.0,
+                "source": "GPS",
+                "timestamp": "2023-10-02T08:00:00.000Z",
+                "speedMetersPerSecond": 2.0
+            }
+        }
+    ],
+    "userLocationProfile": {
+        "frequentPlaces": [
+            {
+                "placeId": "ChIJd8BlQ2BZwokRAFUEcm_qrcA",
+                "placeLocation": "40.712776°, -74.005974°",
+                "label": "WORK"
+            },
+            {
+                "placeId": "ChIJd8BlQ2BZwokRAFUEcm_qrcB",
+                "placeLocation": "40.713776°, -74.006974°",
+                "label": "HOME"
+            },
+            {
+                "placeId": "ChIJd8BlQ2BZwokRAFUEcm_qrcC",
+                "placeLocation": "40.714776°, -74.007974°",
+                "label": "GYM"
+            },
+            {
+                "placeId": "ChIJd8BlQ2BZwokRAFUEcm_qrcD",
+                "placeLocation": "40.715776°, -74.008974°",
+                "label": "PARK"
+            },
+            {
+                "placeId": "ChIJd8BlQ2BZwokRAFUEcm_qrcE",
+                "placeLocation": "40.716776°, -74.009974°",
+                "label": "CAFE"
+            }
+        ]
+    }
+}
