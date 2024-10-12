@@ -5,13 +5,13 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class RawSignal(
-    val activityRecord: ActivityRecord,
-    val position: Position
+    val activityRecord: ActivityRecord?,
+    val position: Position?
 )
 
 @JsonClass(generateAdapter = true)
 data class ActivityRecord(
-    val probableActivities: List<ProbableActivity>,
+    val probableActivities: List<ProbableActivity> = emptyList(),
     val timestamp: String
 )
 

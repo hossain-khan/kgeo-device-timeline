@@ -7,10 +7,10 @@ import com.squareup.moshi.JsonClass
 data class SemanticSegment(
     val startTime: String,
     val endTime: String,
-    val startTimeTimezoneUtcOffsetMinutes: Int,
-    val endTimeTimezoneUtcOffsetMinutes: Int,
-    val timelinePath: List<TimelinePoint>,
-    val visit: Visit
+    val startTimeTimezoneUtcOffsetMinutes: Int?,
+    val endTimeTimezoneUtcOffsetMinutes: Int?,
+    val timelinePath: List<TimelinePoint> = emptyList(),
+    val visit: Visit?
 )
 
 @JsonClass(generateAdapter = true)
