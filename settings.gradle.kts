@@ -1,5 +1,6 @@
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
-rootProject.name = "kgeo-device-timeline"
-
+rootProject.name = "device-timeline"
+include("lib")
+include("sample")
