@@ -100,4 +100,4 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 # Project files
-/sample/src/main/resources/sample-data.json
+/sample/src/main/resources/*.json
