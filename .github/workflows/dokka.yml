@@ -37,7 +37,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Generate Dokka HTML
-        run: ./gradlew dokkaHtml
+        run: ./gradlew :lib:dokkaHtml
 
       - name: Move Dokka HTML to docs
         run: |
@@ -49,8 +49,10 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git status
           git add docs
-          git commit -m 'Update Dokka documentation'
+          git status
+          git commit -m 'Update Dokka documentation' || echo "No changes to commit"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
