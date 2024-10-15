@@ -3,6 +3,8 @@ package dev.hossain.timeline
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.hossain.timeline.model.TimelineData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okio.buffer
 import okio.source
 import java.io.File
@@ -18,7 +20,7 @@ class Parser {
      * @return The parsed [TimelineData] object.
      * @throws IllegalStateException if the file does not exist or if the data cannot be parsed.
      */
-    fun parse(file: File): TimelineData {
+    suspend fun parse(file: File): TimelineData = withContext(Dispatchers.IO) {
         if (file.exists()) {
             val source = file.source().buffer()
             val json = source.readUtf8()
@@ -27,7 +29,7 @@ class Parser {
             val adapter = moshi.adapter(TimelineData::class.java)
             val data = adapter.fromJson(json)
 
-            return data ?: throw IllegalStateException("Failed to parse data")
+            data ?: throw IllegalStateException("Failed to parse data")
         } else {
             throw IllegalStateException("File not found")
         }

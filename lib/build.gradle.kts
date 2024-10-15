@@ -4,16 +4,26 @@ plugins {
 }
 
 group = "dev.hossain.timeline"
-version = "1.0-SNAPSHOT"
+version = "1.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
 }
 
+/**
+ * https://github.com/Kotlin/kotlinx.coroutines
+ */
+val coroutinesVersion = "1.9.0"
+val moshiVersion = "1.15.1"
+val okioVersion = "3.9.1"
+
 dependencies {
-    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
-    implementation("com.squareup.okio:okio:3.9.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
+    implementation("com.squareup.okio:okio:$okioVersion")
+
     testImplementation(kotlin("test"))
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
 }
 
 tasks.test {

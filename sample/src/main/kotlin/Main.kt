@@ -3,7 +3,7 @@ package dev.hossain.timeline.sample
 import dev.hossain.timeline.Parser
 import java.io.File
 
-fun main() {
+suspend fun main() {
     println("Hello Sample!")
     val parser = Parser()
     val resource = {}.javaClass.getResource("/device-timeline.json")
