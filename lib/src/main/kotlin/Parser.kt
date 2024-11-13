@@ -8,6 +8,7 @@ import kotlinx.coroutines.withContext
 import okio.buffer
 import okio.source
 import java.io.File
+import java.io.InputStream
 
 /**
  * A class responsible for parsing JSON data from a file into a [TimelineData] object.
@@ -33,5 +34,23 @@ class Parser {
         } else {
             throw IllegalStateException("File not found")
         }
+    }
+
+    /**
+     * Parses the given input stream into a [TimelineData] object.
+     *
+     * @param inputStream The input stream of JSON data to be parsed.
+     * @return The parsed [TimelineData] object.
+     * @throws IllegalStateException if the data cannot be parsed.
+     */
+    suspend fun parse(inputStream: InputStream): TimelineData = withContext(Dispatchers.IO) {
+        val source = inputStream.source().buffer()
+        val json = source.readUtf8()
+
+        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        val adapter = moshi.adapter(TimelineData::class.java)
+        val data = adapter.fromJson(json)
+
+        data ?: throw IllegalStateException("Failed to parse data")
     }
 }
