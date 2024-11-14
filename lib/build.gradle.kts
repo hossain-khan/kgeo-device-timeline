@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "dev.hossain.timeline"
-version = "1.2-SNAPSHOT"
+version = "1.3-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -19,8 +19,8 @@ val okioVersion = "3.9.1"
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-    implementation("com.squareup.moshi:moshi-kotlin:$moshiVersion")
-    implementation("com.squareup.okio:okio:$okioVersion")
+    api("com.squareup.moshi:moshi-kotlin:$moshiVersion")
+    api("com.squareup.okio:okio:$okioVersion")
 
     testImplementation(kotlin("test"))
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
