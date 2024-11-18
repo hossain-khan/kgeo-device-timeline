@@ -5,6 +5,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.hossain.timeline.model.TimelineData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okio.BufferedSource
 import okio.buffer
 import okio.source
 import java.io.File
@@ -23,14 +24,8 @@ class Parser {
      */
     suspend fun parse(file: File): TimelineData = withContext(Dispatchers.IO) {
         if (file.exists()) {
-            val source = file.source().buffer()
-            val json = source.readUtf8()
-
-            val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-            val adapter = moshi.adapter(TimelineData::class.java)
-            val data = adapter.fromJson(json)
-
-            data ?: throw IllegalStateException("Failed to parse data")
+            val source: BufferedSource = file.source().buffer()
+            return@withContext parse(source)
         } else {
             throw IllegalStateException("File not found")
         }
@@ -44,12 +39,21 @@ class Parser {
      * @throws IllegalStateException if the data cannot be parsed.
      */
     suspend fun parse(inputStream: InputStream): TimelineData = withContext(Dispatchers.IO) {
-        val source = inputStream.source().buffer()
-        val json = source.readUtf8()
+        val source: BufferedSource = inputStream.source().buffer()
+        return@withContext parse(source)
+    }
 
+    /**
+     * Parses the given buffered source into a [TimelineData] object.
+     *
+     * @param bufferedSource The buffered source of JSON data to be parsed.
+     * @return The parsed [TimelineData] object.
+     * @throws IllegalStateException if the data cannot be parsed.
+     */
+    suspend fun parse(bufferedSource: BufferedSource): TimelineData = withContext(Dispatchers.IO) {
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         val adapter = moshi.adapter(TimelineData::class.java)
-        val data = adapter.fromJson(json)
+        val data = adapter.fromJson(bufferedSource)
 
         data ?: throw IllegalStateException("Failed to parse data")
     }
