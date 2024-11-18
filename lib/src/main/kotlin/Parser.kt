@@ -1,6 +1,5 @@
 package dev.hossain.timeline
 
-import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.hossain.timeline.model.TimelineData
@@ -25,14 +24,8 @@ class Parser {
      */
     suspend fun parse(file: File): TimelineData = withContext(Dispatchers.IO) {
         if (file.exists()) {
-            val source = file.source().buffer()
-            val json = source.readUtf8()
-
-            val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-            val adapter = moshi.adapter(TimelineData::class.java)
-            val data = adapter.fromJson(json)
-
-            data ?: throw IllegalStateException("Failed to parse data")
+            val source: BufferedSource = file.source().buffer()
+            return@withContext parse(source)
         } else {
             throw IllegalStateException("File not found")
         }
@@ -47,13 +40,7 @@ class Parser {
      */
     suspend fun parse(inputStream: InputStream): TimelineData = withContext(Dispatchers.IO) {
         val source: BufferedSource = inputStream.source().buffer()
-        val json = source.readUtf8()
-
-        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-        val adapter = moshi.adapter(TimelineData::class.java)
-        val data = adapter.fromJson(json)
-
-        data ?: throw IllegalStateException("Failed to parse data")
+        return@withContext parse(source)
     }
 
     /**

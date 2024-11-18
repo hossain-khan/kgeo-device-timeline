@@ -1,6 +1,7 @@
 import dev.hossain.timeline.Parser
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import okio.buffer
+import okio.source
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -14,6 +15,7 @@ import java.io.InputStream
 class ParserTest {
 
     private lateinit var parser: Parser
+
     @BeforeEach
     fun setUp() {
         parser = Parser()
@@ -36,6 +38,20 @@ class ParserTest {
         val resource = {}.javaClass.getResourceAsStream("/test-data.json")
         val inputStream: InputStream = resource ?: throw IllegalStateException("Resource not found")
         val timeline = parser.parse(inputStream)
+
+        assertNotNull(timeline)
+        assertEquals(2, timeline.semanticSegments.size)
+        assertEquals(2, timeline.rawSignals.size)
+        assertEquals(5, timeline.userLocationProfile.frequentPlaces.size)
+    }
+
+
+    @Test
+    fun parseBufferedSource() = runTest {
+        val resource = {}.javaClass.getResourceAsStream("/test-data.json")
+        val inputStream: InputStream = resource ?: throw IllegalStateException("Resource not found")
+        val bufferedSource = inputStream.source().buffer()
+        val timeline = parser.parse(bufferedSource)
 
         assertNotNull(timeline)
         assertEquals(2, timeline.semanticSegments.size)
