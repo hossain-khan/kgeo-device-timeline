@@ -65,6 +65,7 @@ $dokka.location:dev.hossain.timeline/Parser///PointingToDeclaration/lib/dev.hos
 $dokka.location:dev.hossain.timeline/Parser/Parser/#/PointingToDeclaration/lib/dev.hossain.timeline/-parser/-parser.html
 $dokka.location:dev.hossain.timeline/Parser/parse/#java.io.File/PointingToDeclaration/lib/dev.hossain.timeline/-parser/parse.html
 $dokka.location:dev.hossain.timeline/Parser/parse/#java.io.InputStream/PointingToDeclaration/lib/dev.hossain.timeline/-parser/parse.html
+$dokka.location:dev.hossain.timeline/Parser/parse/#okio.BufferedSource/PointingToDeclaration/lib/dev.hossain.timeline/-parser/parse.html
 dev.hossain.timeline
 dev.hossain.timeline.model
 
