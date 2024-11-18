@@ -1,10 +1,12 @@
 package dev.hossain.timeline
 
+import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dev.hossain.timeline.model.TimelineData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okio.BufferedSource
 import okio.buffer
 import okio.source
 import java.io.File
@@ -44,12 +46,27 @@ class Parser {
      * @throws IllegalStateException if the data cannot be parsed.
      */
     suspend fun parse(inputStream: InputStream): TimelineData = withContext(Dispatchers.IO) {
-        val source = inputStream.source().buffer()
+        val source: BufferedSource = inputStream.source().buffer()
         val json = source.readUtf8()
 
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         val adapter = moshi.adapter(TimelineData::class.java)
         val data = adapter.fromJson(json)
+
+        data ?: throw IllegalStateException("Failed to parse data")
+    }
+
+    /**
+     * Parses the given buffered source into a [TimelineData] object.
+     *
+     * @param bufferedSource The buffered source of JSON data to be parsed.
+     * @return The parsed [TimelineData] object.
+     * @throws IllegalStateException if the data cannot be parsed.
+     */
+    suspend fun parse(bufferedSource: BufferedSource): TimelineData = withContext(Dispatchers.IO) {
+        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        val adapter = moshi.adapter(TimelineData::class.java)
+        val data = adapter.fromJson(bufferedSource)
 
         data ?: throw IllegalStateException("Failed to parse data")
     }
