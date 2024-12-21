@@ -14,7 +14,7 @@ repositories {
  * https://github.com/Kotlin/kotlinx.coroutines
  */
 val coroutinesVersion = "1.10.1"
-val moshiVersion = "1.15.1"
+val moshiVersion = "1.15.2"
 val okioVersion = "3.9.1"
 
 dependencies {
