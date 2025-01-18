@@ -2,6 +2,8 @@
 
 Parses Google's Location History Timeline JSON data exported from device.
 
+![Device Timeline Export Flow](resources/device-export-flow/device-timeline-export-flow.png)
+
 ### Usage
 
 ```kotlin
