@@ -5,6 +5,7 @@ Parses Google's Location History Timeline JSON data exported from device.
 ![Device Timeline Export Flow](resources/device-export-flow/device-timeline-export-flow.png)
 
 ### Usage
+Get the latest **`.jar`** file containing the `Parser` from [releases](https://github.com/hossain-khan/kgeo-device-timeline/releases).
 
 ```kotlin
 val parser = Parser()
