@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.assertThrows
 import java.io.File
 import java.io.InputStream
 
@@ -57,5 +58,23 @@ class ParserTest {
         assertEquals(2, timeline.semanticSegments.size)
         assertEquals(2, timeline.rawSignals.size)
         assertEquals(5, timeline.userLocationProfile.frequentPlaces.size)
+    }
+
+    @Test
+    fun parseFileNotFound() = runTest {
+        val nonExistentFile = File("non-existent-file.json")
+        val exception = assertThrows<IllegalStateException> {
+            parser.parse(nonExistentFile)
+        }
+        assertTrue(exception.message?.contains("File not found") == true)
+        assertTrue(exception.message?.contains(nonExistentFile.absolutePath) == true)
+    }
+
+    @Test
+    fun parseInvalidJson() = runTest {
+        val invalidJsonStream = "{ invalid json }".byteInputStream()
+        assertThrows<com.squareup.moshi.JsonEncodingException> {
+            parser.parse(invalidJsonStream)
+        }
     }
 }

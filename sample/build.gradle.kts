@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.1.0"
+    kotlin("jvm")
 }
 
 group = "dev.hossain.timeline.sample"
@@ -18,5 +18,5 @@ tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(19)
+    jvmToolchain(21)
 }
