@@ -61,6 +61,7 @@ $dokka.location:dev.hossain.timeline.model/Visit/hierarchyLevel/#/PointingToDecl
 $dokka.location:dev.hossain.timeline.model/Visit/probability/#/PointingToDeclaration/lib/dev.hossain.timeline.model/-visit/probability.html
 $dokka.location:dev.hossain.timeline.model/Visit/topCandidate/#/PointingToDeclaration/lib/dev.hossain.timeline.model/-visit/top-candidate.html
 $dokka.location:dev.hossain.timeline////PointingToDeclaration/lib/dev.hossain.timeline/index.html
+$dokka.location:dev.hossain.timeline/Parser.Companion///PointingToDeclaration/lib/dev.hossain.timeline/-parser/-companion/index.html
 $dokka.location:dev.hossain.timeline/Parser///PointingToDeclaration/lib/dev.hossain.timeline/-parser/index.html
 $dokka.location:dev.hossain.timeline/Parser/Parser/#/PointingToDeclaration/lib/dev.hossain.timeline/-parser/-parser.html
 $dokka.location:dev.hossain.timeline/Parser/parse/#java.io.File/PointingToDeclaration/lib/dev.hossain.timeline/-parser/parse.html
