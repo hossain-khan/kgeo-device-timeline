@@ -13,22 +13,40 @@ import java.io.InputStream
 
 /**
  * A class responsible for parsing JSON data from a file into a [TimelineData] object.
+ * 
+ * This parser uses Moshi for JSON deserialization and reuses a single Moshi instance
+ * for optimal performance.
  */
 class Parser {
+    
+    companion object {
+        /**
+         * Shared Moshi instance for optimal performance across all parser operations.
+         */
+        private val moshi = Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+            
+        /**
+         * Shared adapter for TimelineData deserialization.
+         */
+        private val adapter = moshi.adapter(TimelineData::class.java)
+    }
     /**
      * Parses the given file into a [TimelineData] object.
      *
      * @param file The JSON file of timeline data to be parsed.
      * @return The parsed [TimelineData] object.
-     * @throws IllegalStateException if the file does not exist or if the data cannot be parsed.
+     * @throws IllegalStateException if the file does not exist.
+     * @throws com.squareup.moshi.JsonDataException if the JSON format is invalid.
+     * @throws java.io.IOException if there's an error reading the file.
      */
     suspend fun parse(file: File): TimelineData = withContext(Dispatchers.IO) {
-        if (file.exists()) {
-            val source: BufferedSource = file.source().buffer()
-            return@withContext parse(source)
-        } else {
-            throw IllegalStateException("File not found")
+        if (!file.exists()) {
+            throw IllegalStateException("File not found: ${file.absolutePath}")
         }
+        val source: BufferedSource = file.source().buffer()
+        return@withContext parse(source)
     }
 
     /**
@@ -36,7 +54,8 @@ class Parser {
      *
      * @param inputStream The input stream of JSON data to be parsed.
      * @return The parsed [TimelineData] object.
-     * @throws IllegalStateException if the data cannot be parsed.
+     * @throws com.squareup.moshi.JsonDataException if the JSON format is invalid.
+     * @throws java.io.IOException if there's an error reading the input stream.
      */
     suspend fun parse(inputStream: InputStream): TimelineData = withContext(Dispatchers.IO) {
         val source: BufferedSource = inputStream.source().buffer()
@@ -48,13 +67,12 @@ class Parser {
      *
      * @param bufferedSource The buffered source of JSON data to be parsed.
      * @return The parsed [TimelineData] object.
-     * @throws IllegalStateException if the data cannot be parsed.
+     * @throws com.squareup.moshi.JsonDataException if the JSON format is invalid.
+     * @throws IllegalStateException if the data cannot be parsed (null result).
+     * @throws java.io.IOException if there's an error reading the buffered source.
      */
     suspend fun parse(bufferedSource: BufferedSource): TimelineData = withContext(Dispatchers.IO) {
-        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-        val adapter = moshi.adapter(TimelineData::class.java)
         val data = adapter.fromJson(bufferedSource)
-
-        data ?: throw IllegalStateException("Failed to parse data")
+        data ?: throw IllegalStateException("Failed to parse timeline data: JSON resulted in null object")
     }
 }
