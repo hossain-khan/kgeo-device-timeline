@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm")
+    application
 }
 
 group = "dev.hossain.timeline.sample"
@@ -20,4 +21,8 @@ tasks.test {
 }
 kotlin {
     jvmToolchain(21)
+}
+
+application {
+    mainClass.set("dev.hossain.timeline.sample.MainKt")
 }
