@@ -15,18 +15,11 @@ import java.io.InputStream
  */
 class ParserTest {
 
-    private lateinit var parser: Parser
-
-    @BeforeEach
-    fun setUp() {
-        parser = Parser()
-    }
-
     @Test
     fun parseFile() = runTest {
         val resource = {}.javaClass.getResource("/test-data.json")
         val file = File(resource?.toURI() ?: throw IllegalStateException("Resource not found"))
-        val timeline = parser.parse(file)
+        val timeline = Parser.parse(file)
 
         assertNotNull(timeline)
         assertEquals(2, timeline.semanticSegments.size)
@@ -38,7 +31,7 @@ class ParserTest {
     fun parseInputStream() = runTest {
         val resource = {}.javaClass.getResourceAsStream("/test-data.json")
         val inputStream: InputStream = resource ?: throw IllegalStateException("Resource not found")
-        val timeline = parser.parse(inputStream)
+        val timeline = Parser.parse(inputStream)
 
         assertNotNull(timeline)
         assertEquals(2, timeline.semanticSegments.size)
@@ -52,7 +45,7 @@ class ParserTest {
         val resource = {}.javaClass.getResourceAsStream("/test-data.json")
         val inputStream: InputStream = resource ?: throw IllegalStateException("Resource not found")
         val bufferedSource = inputStream.source().buffer()
-        val timeline = parser.parse(bufferedSource)
+        val timeline = Parser.parse(bufferedSource)
 
         assertNotNull(timeline)
         assertEquals(2, timeline.semanticSegments.size)
@@ -63,8 +56,8 @@ class ParserTest {
     @Test
     fun parseFileNotFound() = runTest {
         val nonExistentFile = File("non-existent-file.json")
-        val exception = assertThrows<IllegalStateException> {
-            parser.parse(nonExistentFile)
+        val exception = assertThrows<dev.hossain.timeline.FileNotFoundException> {
+            Parser.parse(nonExistentFile)
         }
         assertTrue(exception.message?.contains("File not found") == true)
         assertTrue(exception.message?.contains(nonExistentFile.absolutePath) == true)
@@ -73,8 +66,38 @@ class ParserTest {
     @Test
     fun parseInvalidJson() = runTest {
         val invalidJsonStream = "{ invalid json }".byteInputStream()
-        assertThrows<com.squareup.moshi.JsonEncodingException> {
-            parser.parse(invalidJsonStream)
+        assertThrows<dev.hossain.timeline.InvalidFormatException> {
+            Parser.parse(invalidJsonStream)
         }
+    }
+
+    @Test
+    fun parseToResultSuccess() = runTest {
+        val resource = {}.javaClass.getResource("/test-data.json")
+        val file = File(resource?.toURI() ?: throw IllegalStateException("Resource not found"))
+        val result = Parser.parseToResult(file)
+
+        assertTrue(result.isSuccess())
+        assertNotNull(result.getOrNull())
+        assertEquals(2, result.getOrThrow().semanticSegments.size)
+    }
+
+    @Test
+    fun parseToResultError() = runTest {
+        val nonExistentFile = File("non-existent-file.json")
+        val result = Parser.parseToResult(nonExistentFile)
+
+        assertTrue(result.isError())
+        assertNull(result.getOrNull())
+    }
+
+    @Test
+    fun fromFileMethod() = runTest {
+        val resource = {}.javaClass.getResource("/test-data.json")
+        val file = File(resource?.toURI() ?: throw IllegalStateException("Resource not found"))
+        val result = Parser.fromFile(file.absolutePath)
+
+        assertTrue(result.isSuccess())
+        assertEquals(2, result.getOrThrow().semanticSegments.size)
     }
 }
