@@ -1,0 +1,34 @@
+build:
+  maxIssues: 0
+
+config:
+  validation: true
+  checkExhaustiveness: false
+
+complexity:
+  active: true
+
+coroutines:
+  active: true
+
+empty-blocks:
+  active: true
+
+exceptions:
+  active: true
+
+naming:
+  active: true
+  InvalidPackageDeclaration:
+    active: false  # Disable since our package structure is correct
+
+performance:
+  active: true
+
+potential-bugs:
+  active: true
+
+style:
+  active: true
+  MaxLineLength:
+    maxLineLength: 120
