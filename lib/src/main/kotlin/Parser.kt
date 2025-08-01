@@ -45,6 +45,7 @@ object Parser {
             .add(KotlinJsonAdapterFactory())
             .build()
     }
+    
     /**
      * Lazily initialized adapter for TimelineData deserialization.
      */
@@ -86,7 +87,6 @@ object Parser {
         } catch (e: IOException) {
             throw ParseIOException("Failed to read file: ${file.absolutePath}", e)
         }
-    }
     }
 
     /**
@@ -148,5 +148,135 @@ object Parser {
             throw ParseIOException("IO error during JSON parsing", e)
         }
     }
+    
+    // MARK: - Result-based API (recommended)
+    
+    /**
+     * Parses the given file into a [ParseResult] using default configuration.
+     *
+     * @param file The JSON file of timeline data to be parsed.
+     * @return [ParseResult.Success] with the parsed data or [ParseResult.Error] with error information.
+     */
+    suspend fun parseToResult(file: File): ParseResult {
+        return try {
+            val data = parse(file)
+            ParseResult.Success(data)
+        } catch (e: ParseException) {
+            ParseResult.Error(e, e.message ?: "Unknown parsing error")
+        } catch (e: Exception) {
+            ParseResult.Error(e, "Unexpected error: ${e.message}")
+        }
+    }
+    
+    /**
+     * Parses the given file into a [ParseResult] with custom configuration.
+     *
+     * @param file The JSON file of timeline data to be parsed.
+     * @param config Configuration options for parsing.
+     * @return [ParseResult.Success] with the parsed data or [ParseResult.Error] with error information.
+     */
+    suspend fun parseToResult(file: File, config: ParserConfig): ParseResult {
+        return try {
+            val data = parse(file, config)
+            ParseResult.Success(data)
+        } catch (e: ParseException) {
+            ParseResult.Error(e, e.message ?: "Unknown parsing error")
+        } catch (e: Exception) {
+            ParseResult.Error(e, "Unexpected error: ${e.message}")
+        }
+    }
+    
+    /**
+     * Parses the given input stream into a [ParseResult] using default configuration.
+     *
+     * @param inputStream The input stream of JSON data to be parsed.
+     * @return [ParseResult.Success] with the parsed data or [ParseResult.Error] with error information.
+     */
+    suspend fun parseToResult(inputStream: InputStream): ParseResult {
+        return try {
+            val data = parse(inputStream)
+            ParseResult.Success(data)
+        } catch (e: ParseException) {
+            ParseResult.Error(e, e.message ?: "Unknown parsing error")
+        } catch (e: Exception) {
+            ParseResult.Error(e, "Unexpected error: ${e.message}")
+        }
+    }
+    
+    /**
+     * Parses the given input stream into a [ParseResult] with custom configuration.
+     *
+     * @param inputStream The input stream of JSON data to be parsed.
+     * @param config Configuration options for parsing.
+     * @return [ParseResult.Success] with the parsed data or [ParseResult.Error] with error information.
+     */
+    suspend fun parseToResult(inputStream: InputStream, config: ParserConfig): ParseResult {
+        return try {
+            val data = parse(inputStream, config)
+            ParseResult.Success(data)
+        } catch (e: ParseException) {
+            ParseResult.Error(e, e.message ?: "Unknown parsing error")
+        } catch (e: Exception) {
+            ParseResult.Error(e, "Unexpected error: ${e.message}")
+        }
+    }
+    
+    /**
+     * Parses the given buffered source into a [ParseResult] using default configuration.
+     *
+     * @param bufferedSource The buffered source of JSON data to be parsed.
+     * @return [ParseResult.Success] with the parsed data or [ParseResult.Error] with error information.
+     */
+    suspend fun parseToResult(bufferedSource: BufferedSource): ParseResult {
+        return try {
+            val data = parse(bufferedSource)
+            ParseResult.Success(data)
+        } catch (e: ParseException) {
+            ParseResult.Error(e, e.message ?: "Unknown parsing error")
+        } catch (e: Exception) {
+            ParseResult.Error(e, "Unexpected error: ${e.message}")
+        }
+    }
+    
+    /**
+     * Parses the given buffered source into a [ParseResult] with custom configuration.
+     *
+     * @param bufferedSource The buffered source of JSON data to be parsed.
+     * @param config Configuration options for parsing.
+     * @return [ParseResult.Success] with the parsed data or [ParseResult.Error] with error information.
+     */
+    suspend fun parseToResult(bufferedSource: BufferedSource, config: ParserConfig): ParseResult {
+        return try {
+            val data = parse(bufferedSource, config)
+            ParseResult.Success(data)
+        } catch (e: ParseException) {
+            ParseResult.Error(e, e.message ?: "Unknown parsing error")
+        } catch (e: Exception) {
+            ParseResult.Error(e, "Unexpected error: ${e.message}")
+        }
+    }
+    
+    // MARK: - Factory methods for convenience
+    
+    /**
+     * Creates a parser result from a file path string.
+     *
+     * @param filePath Path to the JSON file.
+     * @param config Configuration options for parsing.
+     * @return [ParseResult.Success] with the parsed data or [ParseResult.Error] with error information.
+     */
+    suspend fun fromFile(filePath: String, config: ParserConfig = ParserConfig.DEFAULT): ParseResult {
+        return parseToResult(File(filePath), config)
+    }
+    
+    /**
+     * Creates a parser result from a JSON string.
+     *
+     * @param jsonString The JSON string to parse.
+     * @param config Configuration options for parsing.
+     * @return [ParseResult.Success] with the parsed data or [ParseResult.Error] with error information.
+     */
+    suspend fun fromJsonString(jsonString: String, config: ParserConfig = ParserConfig.DEFAULT): ParseResult {
+        return parseToResult(jsonString.byteInputStream(), config)
     }
 }
