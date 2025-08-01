@@ -14,7 +14,7 @@ sealed class ParseResult {
     /**
      * Failed parsing result containing error information.
      */
-    data class Error(val exception: Throwable, val message: String) : ParseResult()
+    data class Error(val exception: Throwable, val message: String = exception.message ?: "Unknown error") : ParseResult()
     
     /**
      * Returns the data if successful, or null if failed.
