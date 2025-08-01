@@ -51,7 +51,77 @@ dependencies {
 
 Get the latest **`.jar`** file containing the `Parser` from [releases](https://github.com/hossain-khan/kgeo-device-timeline/releases).
 
-### Basic Usage
+### Basic Usage (Exception-based API)
+
+```kotlin
+import dev.hossain.timeline.Parser
+import java.io.File
+
+suspend fun main() {
+    val file = File("timeline.json")
+    val timeline = Parser.parse(file)
+
+    println("Parsed timeline data with ${timeline.semanticSegments.size} segments")
+    println("Parsed timeline data with ${timeline.rawSignals.size} signals")
+    println("Parsed timeline data with ${timeline.userLocationProfile.frequentPlaces.size} frequent places")
+}
+```
+
+### Recommended Usage (Result-based API)
+
+```kotlin
+import dev.hossain.timeline.Parser
+import dev.hossain.timeline.ParseResult
+import java.io.File
+
+suspend fun main() {
+    val file = File("timeline.json")
+    when (val result = Parser.parseToResult(file)) {
+        is ParseResult.Success -> {
+            val timeline = result.data
+            println("Parsed timeline data with ${timeline.semanticSegments.size} segments")
+            println("Parsed timeline data with ${timeline.rawSignals.size} signals")
+            println("Parsed timeline data with ${timeline.userLocationProfile.frequentPlaces.size} frequent places")
+        }
+        is ParseResult.Error -> {
+            println("Error parsing timeline: ${result.message}")
+        }
+    }
+}
+```
+
+### Advanced Usage with Configuration
+
+```kotlin
+import dev.hossain.timeline.Parser
+import dev.hossain.timeline.ParserConfig
+import java.io.File
+
+suspend fun main() {
+    val config = ParserConfig(
+        enableLazyLoading = true,
+        validateInput = false  // For better performance on trusted input
+    )
+    val timeline = Parser.parse(file, config)
+}
+```
+
+### Convenient Factory Methods
+
+```kotlin
+import dev.hossain.timeline.Parser
+
+suspend fun main() {
+    // Parse from file path
+    val result = Parser.fromFile("/path/to/timeline.json")
+
+    // Parse from JSON string
+    val jsonString = """{"semanticSegments": [], "rawSignals": [], "userLocationProfile": {"frequentPlaces": []}}"""
+    val result = Parser.fromJsonString(jsonString)
+}
+```
+
+### Legacy Usage (Backward Compatible)
 
 ```kotlin
 import dev.hossain.timeline.Parser
