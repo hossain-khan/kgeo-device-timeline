@@ -1,32 +1,220 @@
 # Google Device Timeline JSON Parser
 
-Parses Google's Location History Timeline JSON data exported from device.
+[![Java CI with Gradle](https://github.com/hossain-khan/kgeo-device-timeline/actions/workflows/gradle.yml/badge.svg)](https://github.com/hossain-khan/kgeo-device-timeline/actions/workflows/gradle.yml)
+[![Dokka for Github Pages](https://github.com/hossain-khan/kgeo-device-timeline/actions/workflows/dokka.yml/badge.svg)](https://github.com/hossain-khan/kgeo-device-timeline/actions/workflows/dokka.yml)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+A Kotlin library for parsing Google's Location History Timeline JSON data exported from device.
 
 ![Device Timeline Export Flow](resources/device-export-flow/device-timeline-export-flow.png)
 
-### Usage
-Get the latest **`.jar`** file containing the `Parser` from [releases](https://github.com/hossain-khan/kgeo-device-timeline/releases).
+## Features
+
+- 🚀 **High Performance**: Uses efficient streaming JSON parsing with Moshi and Okio
+- 🔄 **Asynchronous**: Built with Kotlin coroutines for non-blocking operations  
+- 📱 **Comprehensive Data Models**: Supports all major timeline data structures including:
+  - Semantic segments (places visited, activities)
+  - Raw location signals 
+  - User location profiles and frequent places
+- 🛡️ **Type Safe**: Full Kotlin type safety with data classes
+- 🧪 **Well Tested**: Comprehensive test coverage
+
+## Installation
+
+### Gradle (Kotlin DSL)
 
 ```kotlin
-val parser = Parser()
-val file = File("timeline.json")
-val timeline = parser.parse(file)
-
-println("Parsed timeline data with ${timeline.semanticSegments.size} segments")
-println("Parsed timeline data with ${timeline.rawSignals.size} signals")
-println("Parsed timeline data with ${timeline.userLocationProfile.frequentPlaces.size} frequent places")
+dependencies {
+    implementation("dev.hossain.timeline:lib:1.4")
+}
 ```
 
+### Gradle (Groovy DSL)
 
-#### Output
+```groovy
+dependencies {
+    implementation 'dev.hossain.timeline:lib:1.4'
+}
+```
+
+### Maven
+
+```xml
+<dependency>
+    <groupId>dev.hossain.timeline</groupId>
+    <artifactId>lib</artifactId>
+    <version>1.4</version>
+</dependency>
+```
+
+## Quick Start
+
+Get the latest **`.jar`** file containing the `Parser` from [releases](https://github.com/hossain-khan/kgeo-device-timeline/releases).
+
+### Basic Usage
+
+```kotlin
+import dev.hossain.timeline.Parser
+import java.io.File
+
+suspend fun main() {
+    val parser = Parser()
+    val file = File("timeline.json")
+    val timeline = parser.parse(file)
+
+    println("Parsed timeline data with ${timeline.semanticSegments.size} segments")
+    println("Parsed timeline data with ${timeline.rawSignals.size} signals") 
+    println("Parsed timeline data with ${timeline.userLocationProfile.frequentPlaces.size} frequent places")
+}
+```
+
+### Using with InputStream
+
+```kotlin
+import dev.hossain.timeline.Parser
+import java.io.FileInputStream
+
+suspend fun parseFromStream() {
+    val parser = Parser()
+    val inputStream = FileInputStream("timeline.json")
+    val timeline = parser.parse(inputStream)
+    
+    // Process timeline data
+    timeline.semanticSegments.forEach { segment ->
+        println("Visit: ${segment.visit?.topCandidate?.placeId}")
+        println("Activity: ${segment.activity?.activityType}")
+    }
+}
+```
+
+### Advanced Usage
+
+```kotlin
+import dev.hossain.timeline.Parser
+
+suspend fun analyzeTimelineData() {
+    val parser = Parser()
+    val timeline = parser.parse(File("timeline.json"))
+    
+    // Analyze activities
+    val activities = timeline.rawSignals
+        .mapNotNull { it.activityRecord?.probableActivities }
+        .flatten()
+        .groupBy { it.type }
+        .mapValues { it.value.size }
+    
+    println("Activity distribution: $activities")
+    
+    // Find frequent places
+    val frequentPlaces = timeline.userLocationProfile.frequentPlaces
+    println("You frequently visit ${frequentPlaces.size} places")
+    
+    frequentPlaces.forEach { place ->
+        println("- ${place.location?.name} (confidence: ${place.location?.sourceInfo?.deviceTag})")
+    }
+}
+```
+
+## Data Format
+
+The library parses Google's Location History Timeline JSON format which includes:
+
+### Timeline Data Structure
+
+```kotlin
+data class TimelineData(
+    val semanticSegments: List<SemanticSegment>,    // Places visited and activities
+    val rawSignals: List<RawSignal>,                // Raw location data points
+    val userLocationProfile: UserLocationProfile    // User's frequent places
+)
+```
+
+### Semantic Segments
+
+Semantic segments represent meaningful places and activities:
+
+- **Places visited**: Restaurants, shops, home, work locations
+- **Activities**: Walking, driving, cycling, flights
+- **Timeline paths**: Route taken between locations
+- **Duration and timestamps**: When activities occurred
+
+### Raw Signals  
+
+Raw signals contain the underlying location data:
+
+- **Location coordinates**: Latitude, longitude, altitude
+- **Accuracy information**: Location precision and confidence
+- **Activity recognition**: Detected movement types
+- **Device information**: Source device and platform details
+
+## Error Handling
+
+The parser provides comprehensive error handling:
+
+```kotlin
+try {
+    val timeline = parser.parse(file)
+    // Process timeline
+} catch (e: IllegalStateException) {
+    // File not found or invalid file
+    println("Error: ${e.message}")
+} catch (e: JsonDataException) {
+    // Invalid JSON format
+    println("JSON parsing error: ${e.message}")
+} catch (e: IOException) {
+    // File reading error
+    println("IO error: ${e.message}")
+}
+```
+
+## Sample Output
 
 ```
 Parsed timeline data with 51902 segments
 Parsed timeline data with 7865 signals
 Parsed timeline data with 2 frequent places
+Unique activities: [CYCLING, FLYING, IN_PASSENGER_VEHICLE, RUNNING, STILL, WALKING]
 ```
 
+## API Documentation
 
-### Related Resources
-* https://github.com/hossain-khan/kgeo-timeline
-* https://github.com/CarlosBergillos/LocationHistoryFormat/issues/13#issuecomment-2370748731
+Full API documentation is available at: [https://hossain-khan.github.io/kgeo-device-timeline/](https://hossain-khan.github.io/kgeo-device-timeline/)
+
+## Building from Source
+
+### Prerequisites
+
+- JDK 21 or higher
+- Gradle 8.12+ (included via wrapper)
+
+### Build Commands
+
+```bash
+# Clean and build
+./gradlew clean build
+
+# Run tests
+./gradlew test
+
+# Generate documentation
+./gradlew :lib:dokkaHtml
+```
+
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to this project.
+
+## Related Resources
+
+- [kgeo-timeline](https://github.com/hossain-khan/kgeo-timeline) - Related timeline analysis project
+- [LocationHistoryFormat](https://github.com/CarlosBergillos/LocationHistoryFormat/issues/13#issuecomment-2370748731) - Documentation on Google's location history format
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+- 📖 [Documentation](https://hossain-khan.github.io/kgeo-device-timeline/)
+- 🐛 [Issue Tracker](https://github.com/hossain-khan/kgeo-device-timeline/issues)
+- 💬 [Discussions](https://github.com/hossain-khan/kgeo-device-timeline/discussions)

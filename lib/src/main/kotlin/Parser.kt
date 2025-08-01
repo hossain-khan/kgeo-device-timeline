@@ -13,12 +13,12 @@ import java.io.InputStream
 
 /**
  * A class responsible for parsing JSON data from a file into a [TimelineData] object.
- * 
+ *
  * This parser uses Moshi for JSON deserialization and reuses a single Moshi instance
  * for optimal performance.
  */
 class Parser {
-    
+
     companion object {
         /**
          * Shared Moshi instance for optimal performance across all parser operations.
@@ -26,12 +26,13 @@ class Parser {
         private val moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
-            
+
         /**
          * Shared adapter for TimelineData deserialization.
          */
         private val adapter = moshi.adapter(TimelineData::class.java)
     }
+
     /**
      * Parses the given file into a [TimelineData] object.
      *
@@ -42,9 +43,7 @@ class Parser {
      * @throws java.io.IOException if there's an error reading the file.
      */
     suspend fun parse(file: File): TimelineData = withContext(Dispatchers.IO) {
-        if (!file.exists()) {
-            throw IllegalStateException("File not found: ${file.absolutePath}")
-        }
+        check(file.exists()) { "File not found: ${file.absolutePath}" }
         val source: BufferedSource = file.source().buffer()
         return@withContext parse(source)
     }
@@ -73,6 +72,6 @@ class Parser {
      */
     suspend fun parse(bufferedSource: BufferedSource): TimelineData = withContext(Dispatchers.IO) {
         val data = adapter.fromJson(bufferedSource)
-        data ?: throw IllegalStateException("Failed to parse timeline data: JSON resulted in null object")
+        data ?: error("Failed to parse timeline data: JSON resulted in null object")
     }
 }
