@@ -1,9 +1,5 @@
 # Google Device Timeline JSON Parser
 
-[![Java CI with Gradle](https://github.com/hossain-khan/kgeo-device-timeline/actions/workflows/gradle.yml/badge.svg)](https://github.com/hossain-khan/kgeo-device-timeline/actions/workflows/gradle.yml)
-[![Dokka for Github Pages](https://github.com/hossain-khan/kgeo-device-timeline/actions/workflows/dokka.yml/badge.svg)](https://github.com/hossain-khan/kgeo-device-timeline/actions/workflows/dokka.yml)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-
 A Kotlin library for parsing Google's Location History Timeline JSON data exported from device.
 
 ![Device Timeline Export Flow](resources/device-export-flow/device-timeline-export-flow.png)
@@ -274,17 +270,15 @@ Full API documentation is available at: [https://hossain-khan.github.io/kgeo-dev
 
 We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to this project.
 
-## Related Resources
-
-- [kgeo-timeline](https://github.com/hossain-khan/kgeo-timeline) - Related timeline analysis project
-- [LocationHistoryFormat](https://github.com/CarlosBergillos/LocationHistoryFormat/issues/13#issuecomment-2370748731) - Documentation on Google's location history format
+### Related Resources
+* https://github.com/hossain-khan/kgeo-timeline
+* https://github.com/CarlosBergillos/LocationHistoryFormat/issues/13#issuecomment-2370748731
 
 ## License
 
-This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Support
 
 - 📖 [Documentation](https://hossain-khan.github.io/kgeo-device-timeline/)
 - 🐛 [Issue Tracker](https://github.com/hossain-khan/kgeo-device-timeline/issues)
-- 💬 [Discussions](https://github.com/hossain-khan/kgeo-device-timeline/discussions)
