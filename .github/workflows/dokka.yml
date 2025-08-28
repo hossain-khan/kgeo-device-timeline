@@ -40,7 +40,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Generate Dokka HTML
-        run: ./gradlew :lib:dokkaHtml
+        run: ./gradlew :lib:dokkaGeneratePublicationHtml
 
       # Move Dokka HTML files to the /docs folder
       - name: Move Dokka HTML to /docs
