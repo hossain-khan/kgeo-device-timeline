@@ -46,7 +46,7 @@ If you find a bug or have a suggestion for improvement:
 ./gradlew test
 
 # Generate documentation
-./gradlew :lib:dokkaHtml
+./gradlew :lib:dokkaGeneratePublicationHtml
 ```
 
 #### Making Changes

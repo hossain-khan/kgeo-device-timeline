@@ -263,7 +263,7 @@ Full API documentation is available at: [https://hossain-khan.github.io/kgeo-dev
 ./gradlew test
 
 # Generate documentation
-./gradlew :lib:dokkaHtml
+./gradlew :lib:dokkaGeneratePublicationHtml
 ```
 
 ## Contributing
