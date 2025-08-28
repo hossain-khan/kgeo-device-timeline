@@ -19,13 +19,15 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      checks: write
+      pull-requests: write
 
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK
       uses: actions/setup-java@v4
       with:
-        java-version: '19'
+        java-version: '21'
         distribution: 'temurin'
 
     # Configure Gradle for optimal use in GiHub Actions, including caching of downloaded dependencies.
@@ -38,4 +40,13 @@ jobs:
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
+
+    - name: Generate test report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: Gradle Tests
+        path: '**/build/test-results/test/TEST-*.xml'
+        reporter: java-junit
+        fail-on-error: true
 

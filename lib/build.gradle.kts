@@ -5,6 +5,7 @@ plugins {
 
 group = "dev.hossain.timeline"
 version = "1.4"
+description = "A Kotlin library for parsing Google Location History Timeline JSON data"
 
 repositories {
     mavenCentral()
